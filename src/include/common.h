@@ -1,6 +1,6 @@
 /**
  * include common linux head files
- * /
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
