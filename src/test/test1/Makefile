@@ -1,4 +1,4 @@
-export PROG_DIR = /root/code
+
 
 CUR_DIR = $(shell pwd)
 CC = gcc
@@ -15,17 +15,11 @@ INC = -I$(PROG_DIR)/src/include -I$(PROG_DIR)/src/include/test
 DYNLIB_PATH = 
 SLIB_PATH = 
 
-PROG = main
+all : $(OBJS)
+	$(CC) $(CFLAGS) $(INC)  -o $< -c $^
 
 
-%.o : %.c
-	$(CC) $(CFLAGS) $(INC)  -o $@ -c $< 
 
-
-all : $(PROG)
-
-$(PROG) : $(OBJS)
-	$(CC) -o $@ $(OBJS) $(DYNLIB_PATH) $(SLIB_PATH)
 
 .PHONY : show
 
