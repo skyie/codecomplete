@@ -1,15 +1,21 @@
 #!/usr/bin/python
+#from twisted.internet import reactor
+import traceback
 
-def f():
-    '''
-    this is comment
-    '''
-    name = "guy"
-    print 'hello %s' %  (name)
+def hello():
+    print "hello!"
+    traceback.print_stack()
+
+
+def test():
+    from twisted.internet import reactor
+    reactor.callWhenRunning(hello)
+    reactor.run()
+
 
 
 if __name__ == '__main__':
-    f()
+    test()
 
 
 
