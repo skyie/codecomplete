@@ -31,6 +31,14 @@ unix_client_start()
 
 
 }
+
+int sendmsg2server(void* buf, int len)
+{
+    struct msghdr hdr;
+    memset(&hdr, 0, sizeof(struct msghdr));
+    
+
+}
 int main()
 {
 	printf("this is client\n");

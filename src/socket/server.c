@@ -150,6 +150,11 @@ int32_t server_stop()
 
 }
 
+int recvmsg_from_client(void* buf, int len)
+{
+
+    return 0;
+}
 int main()
 {
     server_init(SERVER_UNIX);
