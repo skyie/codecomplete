@@ -11,3 +11,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <errno.h>
+
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <sys/epoll.h>

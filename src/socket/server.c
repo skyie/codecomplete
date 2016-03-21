@@ -1,7 +1,6 @@
 #include "common.h"
-#include "server.h"
 
-
+#if 0
 server_t* g_server = NULL;
 
 #define SERVER_UNIX_PREFIX  "/tmp/server_unix_"
@@ -51,14 +50,38 @@ int32_t server_init(server_type_t type)
     }
     return ret;
 }
+#endif
 
+static int tcp_socket_create()
+{
+    int fd;
+    struct sockaddr_in serv_addr;
 
-void server_start(int32_t listenfd)
+    memset(&serv_addr, 0, sizeof(serv_addr));
+
+    fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0) {
+        perror("create tcp socket fail\n");
+        return -1;
+    }
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(8888);
+    inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr); // value is 0
+
+    if (bind(fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) {
+        perror("bind fail\n");
+        return -1;
+    }
+    listen(fd, 5);
+    printf("server listen on (%s:8888)\n", inet_ntoa(serv_addr.sin_addr));
+    return fd;
+}
+void tcp_server_start(int32_t listenfd)
 {
     int i, maxi, connfd, sockfd, epfd, nfds, portnumber;
-    ssize_t n;
+    ssize_t n = 0;
 #define MAXLINE 200    
-    char line[MAXLINE];
+    char line[MAXLINE] = {0};
     socklen_t clilen;
 
     struct epoll_event ev,events[20];
@@ -81,8 +104,7 @@ void server_start(int32_t listenfd)
         nfds = epoll_wait(epfd, events, 20, 500);
         //处理所发生的所有事件
 
-        for(i=0;i<nfds;++i)
-        {
+        for(i = 0; i < nfds; ++i) {
             //如果新监测到一个SOCKET用户连接到了绑定的SOCKET端口，建立新的连接。
             if(events[i].data.fd == listenfd)
             {
@@ -92,7 +114,7 @@ void server_start(int32_t listenfd)
                     exit(1);
                 }
                 //setnonblocking(connfd);
-                DEBUG("accept a client from %s", inet_ntoa(client_addr.sin_addr));
+                printf("accept a client from %s\n", inet_ntoa(client_addr.sin_addr));
                 //设置用于读操作的文件描述符
                 ev.data.fd = connfd;
                 //设置用于注测的读操作事件
@@ -100,9 +122,9 @@ void server_start(int32_t listenfd)
                 epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
             } else if(events[i].events & EPOLLIN) {
                 //如果是已经连接的用户，并且收到数据，那么进行读入
-                DEBUG("epoll in event\n");
+                //printf("epoll in event\n");
                 if ((sockfd = events[i].data.fd) < 0) {
-                    DEBUG("fd < 0 \n");
+                    printf("fd < 0 \n");
                     continue;
                 }
                 if ( (n = read(sockfd, line, MAXLINE)) < 0) {
@@ -110,22 +132,23 @@ void server_start(int32_t listenfd)
                         close(sockfd);
                         events[i].data.fd = -1;
                     } else {
-                        DEBUG("readline error!\n");
+                        printf("readline error!\n");
                     }
                 } else if (n == 0) {
-                    DEBUG("read 0 bytes\n");
+                    printf("read 0 bytes\n");
                     close(sockfd);
                     events[i].data.fd = -1;
-                }
-                line[n] = '/0';
-                DEBUG("read content:%s\n", line);
-                //设置用于写操作的文件描述符
-                ev.data.fd = sockfd;
-                //设置用于注测的写操作事件
-                ev.events = EPOLLOUT|EPOLLET;
-                //修改sockfd上要处理的事件为EPOLLOUT
+                } else {
+                    line[n] = '\0';
+                    printf("read bytes(%u) content:(%s)\n", n, line);
+                    //设置用于写操作的文件描述符
+                    ev.data.fd = sockfd;
+                    //设置用于注测的写操作事件
+                    ev.events = EPOLLOUT|EPOLLET;
+                    //修改sockfd上要处理的事件为EPOLLOUT
 
-                //epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);
+                    epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);
+                }
             } else if(events[i].events & EPOLLOUT) {
                 // 如果有数据发送
                 sockfd = events[i].data.fd;
@@ -145,20 +168,16 @@ void server_start(int32_t listenfd)
 }
 
 
-int32_t server_stop()
-{
-
-}
-
-int recvmsg_from_client(void* buf, int len)
-{
-
-    return 0;
-}
 int main()
 {
-    server_init(SERVER_UNIX);
-    server_start(g_server->fd);
+    int fd;
+
+    fd = tcp_socket_create();
+    if (fd < 0) {
+        exit(1);
+    }
+    tcp_server_start(fd);
+    
 
     return 0;
 }
