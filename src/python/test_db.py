@@ -1,35 +1,35 @@
-# coding utf-8
-# python Á¬½Ó MySQL
+# -*- coding: utf-8 -*- 
 
-# µ¼Èë:
+
+
 from sqlalchemy import Column, String, create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-# ´´½¨¶ÔÏóµÄ»ùÀà:
+
 Base = declarative_base()
 
-# ¶¨ÒåUser¶ÔÏó:
+
 class User(Base):
-    # ±íµÄÃû×Ö:
+
     __tablename__ = 'user'
-    # ±íµÄ½á¹¹:
+    # ï¿½ï¿½Ä½á¹¹:
     id = Column(String(20), primary_key=True)
     name = Column(String(20))
 
-# ³õÊ¼»¯Êı¾İ¿âÁ¬½Ó:
-engine = create_engine('mysql+mysqlconnector://root:password@localhost:3306/test')
-# ´´½¨DBSessionÀàĞÍ:
+
+engine = create_engine('mysql+mysqlconnector://root:sangfor@localhost:3306/test')
+
 DBSession = sessionmaker(bind=engine)
 
 if __name__ == '__main__':
-    # ´´½¨session¶ÔÏó:
     session = DBSession()
-    # ´´½¨ĞÂUser¶ÔÏó:
+
     new_user = User(id='5', name='Bob')
-    # Ìí¼Óµ½session:
+
     session.add(new_user)
-    # Ìá½»¼´±£´æµ½Êı¾İ¿â:
+
     session.commit()
-    # ¹Ø±Õsession:
+
     session.close()
+    
