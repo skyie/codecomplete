@@ -1,0 +1,91 @@
+1.和全局变量同名的局部变量会屏蔽掉全局变量，因此在函数
+内使用全局变量用global声明
+
+2.unicode ascii utf-8区别和联系
+ascii最开始的编码方式，用1个字节表示，中文，日文等就不能用这种
+编码表示了
+Unicode：为了解决ascii问题，用2个字节表示一个字符，更偏僻的用3个字节，
+可以统一表示任何语言的字符，缺点占空间
+utf-8:解决Unicode占空间问题，根据Unicode表示的数字大小动态调整编码的字节
+数。一般都用utf-8编码就可以了。
+python中用u''表示unicode
+把u'xxx'转换为UTF-8编码的'xxx'用encode('utf-8')方法：
+>>> u'ABC'.encode('utf-8')
+'ABC'
+>>> u'中文'.encode('utf-8')
+'\xe4\xb8\xad\xe6\x96\x87' 因为没有对应的字符，就用\x表示十六进制
+反过来，把UTF-8编码表示的字符串'xxx'转换为Unicode字符串u'xxx'用decode('utf-8')方法：
+>>> 'abc'.decode('utf-8')
+u'abc'
+>>> '\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8')
+u'\u4e2d\u6587'
+>>> print '\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8')
+中文
+
+3.python中使用中文开头加
+# -*- coding: utf-8 -*-
+
+4.python 列表索引-1返回最后一个元素,倒数第二个-2,依次类推
+list = [a,b,c]
+>>list[-1]
+c
+>>list[-2]
+b
+
+元素插入到指定的位置，比如索引号为1的位置：
+>>> classmates
+['Michael', 'Bob', 'Tracy', 'Adam']
+>>> classmates.insert(1, 'Jack')
+>>> classmates
+['Michael', 'Jack', 'Bob', 'Tracy', 'Adam']
+
+要删除list末尾的元素，用pop()方法：
+>>> classmates.pop()
+'Adam'
+>>> classmates
+['Michael', 'Jack', 'Bob', 'Tracy']
+要删除指定位置的元素，用pop(i)方法，其中i是索引位置：
+>>> classmates.pop(1)
+'Jack'
+>>> classmates
+['Michael', 'Bob', 'Tracy']
+
+5.元组注意：
+只有1个元素的tuple定义时必须加一个逗号,，来消除歧义
+>>> t = (1,)
+>>> t
+(1,) 显示时也会加一个逗号
+避免和小括号的定义发生歧义
+>>> t = (1)
+>>> t
+1
+
+6.字典注意点：
+>>> d = {'Michael': 95, 'Bob': 75, 'Tracy': 85}
+要删除一个key，用pop(key)方法，对应的value也会从dict中删除：
+>>> d.pop('Bob')
+75
+>>> d
+{'Michael': 95, 'Tracy': 85}
+7.集合set注意点：
+通过add(key)方法可以添加元素到set中，可以重复添加，但不会有效果：
+
+>>> s.add(4)
+>>> s
+set([1, 2, 3, 4])
+>>> s.add(4)
+>>> s
+set([1, 2, 3, 4])
+通过remove(key)方法可以删除元素：
+
+>>> s.remove(4)
+>>> s
+set([1, 2, 3])
+set可以看成数学意义上的无序和无重复元素的集合，因此，两个set可以做数学意义上的交集、并集等操作：
+
+>>> s1 = set([1, 2, 3])
+>>> s2 = set([2, 3, 4])
+>>> s1 & s2
+set([2, 3])
+>>> s1 | s2
+set([1, 2, 3, 4])
