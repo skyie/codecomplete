@@ -1,0 +1,34 @@
+
+
+CREATE DATABASE  IF NOT EXISTS cy_test;
+USE cy_test;
+CREATE TABLE  IF NOT EXISTS teacher (
+	id INT NOT NULL PRIMARY KEY,
+	name VARCHAR(30) NOT NULL
+);
+CREATE TABLE  IF NOT EXISTS class (
+	name INT NOT NULL PRIMARY KEY,
+	teacherid INT,
+	FOREIGN KEY(teacherid) REFERENCES teacher(id)
+);
+CREATE TABLE  IF NOT EXISTS student(
+	id INT NOT NULL PRIMARY KEY,
+	name VARCHAR(30) NOT NULL,
+	age INT NOT NULL,
+	classname INT,
+	FOREIGN KEY(classname) REFERENCES class(name)
+);
+CREATE TABLE  IF NOT EXISTS course(
+	name INT NOT NULL PRIMARY KEY,
+	description VARCHAR(30) NOT NULL,
+	teacherid INT,
+	FOREIGN KEY(teacherid) REFERENCES teacher(id)	
+);
+CREATE TABLE  IF NOT EXISTS choose_course(
+	studentid INT NOT NULL PRIMARY KEY,
+	courseid INT NOT NULL PRIMARY KEY,
+	grade INT NOT NULL
+);
+
+	
+	

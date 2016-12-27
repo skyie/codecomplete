@@ -1,21 +1,11 @@
 #!/usr/bin/python
-#from twisted.internet import reactor
-import traceback
-
-def hello():
-    print "hello!"
-    traceback.print_stack()
 
 
-def test():
-    from twisted.internet import reactor
-    reactor.callWhenRunning(hello)
-    reactor.run()
-
+from test import test
 
 
 if __name__ == '__main__':
-    test()
+    test.test2()
 
 
 

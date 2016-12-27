@@ -25,18 +25,20 @@ class Address(Base):
     email_address = sa.Column(sa.String(20), nullable=False)
     user_id = sa.Column(sa.String(20), sa.ForeignKey('user.id'))
     
-    #user = orm.relationship('User', back_populates='address')
+    user = orm.relationship('User', back_populates='address')
     
     def __reqr__(self):
         return "<Address email_address(%s)>" % (self.email_address)
 
-engine = sa.create_engine('mysql+mysqlconnector://root:sangfor@localhost:3306/test')
+engine = sa.create_engine('mysql+mysqlconnector://root:sangfor@localhost:3306/test',
+                        echo=True)
 
 DBSession = orm.sessionmaker(bind=engine)
 
 if __name__ == '__main__':
     session = DBSession()
-
+#     import pdb
+#     pdb.set_trace()
     new_user = User(id='5', name='Bob')
     address = Address(id='1', email_address='322@qq.com')
     new_user.address = address
@@ -45,4 +47,9 @@ if __name__ == '__main__':
     session.commit()
 
     session.close()
-    
+ 
+ 
+ 
+ 
+ 
+   
