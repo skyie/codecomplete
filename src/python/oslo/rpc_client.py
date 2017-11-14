@@ -1,6 +1,5 @@
-#!coding:uft-8
-from oslo_config
-import cfg
+# -*- coding: utf-8 -*-
+from oslo_config import cfg
 
 import oslo_messaging as messaging
 
