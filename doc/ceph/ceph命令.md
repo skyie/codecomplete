@@ -30,8 +30,8 @@ rados -p foo rm myobject
 
 
 ## ceph集群写object
-
-
+test
+test
 
 
 
