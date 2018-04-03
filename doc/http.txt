@@ -1,8 +1,0 @@
-http总结：
-链接：http://www.cnblogs.com/li0803/archive/2008/11/03/1324746.html
-	http请求由三部分组成，分别是：请求行、消息报头、请求正文
-	请求行格式：方法 URI http版本(现在是1.1)
-	方法如下：
-	GET,POST,PUT,DELETE,HEAD,OPTION,TRACE
-	HTTP消息报头包括普通报头、请求报头、响应报头、实体报头。
-每一个报头域都是由名字+“：”+空格+值 组成，消息报头域的名字是大小写无关的
