@@ -14,8 +14,25 @@ http:80
 **TCP**
 特点：
 1. 面向连接，三次握手，四次挥手
+SYN三次握手
+MSS默认536字节，对应IP数据包就是536+40(IP头+TCP头)的长度
+异常情况
+client发送的SYN的第一个包丢了？
+
+server给client回的SYN+ACK 丢了？
+
+client给server回的ACK丢了？
 
 
+
+四次挥手
+
+半关闭：
+    close后只是本段到对端的写关闭了，仍然可以继续读对端发送的数据。
+
+close:
+
+shutdown:
 
 
 
