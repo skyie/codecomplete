@@ -6,6 +6,9 @@
 
 int main()
 {
+    int ret;
+
+    ret = sum(1, 2);
     libtest1();
 
 

@@ -1,14 +1,19 @@
 include ../env.mk
 
 
-BIN  = main
+TARGET_BIN  = main
 
-all: $(BIN)
-	$(CC) -L$(TOP_LIBS) -ltest1 -o $@ $^
+all: $(TARGET_BIN)
+	#echo "aa"
 
-BIN: main.o
-	$(CC) $(CFLAGS) -I$(TOP_INCS) -o $@ $^
+$(TARGET_BIN): main.o
+	# 这里居然有顺序要求,动态库要放到最后!!!
+	$(CC) -o $@ $^ -L$(TOP_LIBS)  -ltest1 -I$(TOP_INCS)
 	mv $@ $(BUILD_BIN_DIR)
+
+main.o: main.c
+	$(CC) $(CFLAGS) -I$(TOP_INCS) -o $@ $^
+
 
 .PHONY:help
 
