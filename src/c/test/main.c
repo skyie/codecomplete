@@ -1,15 +1,35 @@
 #include "common.h"
-#include "test1.h"
-#include "test2.h"
+
+
+
+
+
+
+int test_mmap()
+{
+
+
+
+
+
+}
 
 
 int main()
 {
-	printf("hello world!");
+    test_mmap();
 
 
-	test1();
-	test2();
+
+
+
+
+
+
+
+
+
+
 	return 0;
 }
 
