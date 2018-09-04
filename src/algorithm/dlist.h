@@ -197,7 +197,7 @@ void Dlist<T>::dump()
         cout<<node->element<<endl;
         node = node->next;
     }
-        
+        
 }
 #endif
 
