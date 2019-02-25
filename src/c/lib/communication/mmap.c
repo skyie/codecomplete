@@ -14,7 +14,8 @@ void* mmap(void* addr, size_t length, int prot, int flags, int fd, off_t offset)
 
 
 prot:
-    PROT_NONE:无法访问
+    PROT_NONE
+:无法访问
     PROT_READ：可读
     PROT_WRITE：可写
     PROT_EXEC：可执行

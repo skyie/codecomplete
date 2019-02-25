@@ -17,7 +17,7 @@ SLIB_PATH =
 
 PROG = main
 
-
+#test
 %.o : %.c
 	$(CC) $(CFLAGS) $(INC)  -o $@ -c $< 
 
