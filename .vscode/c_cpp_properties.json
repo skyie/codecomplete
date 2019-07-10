@@ -3,12 +3,11 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "D:/IDE/cgwin/usr/include/*"
             ],
             "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
+                "_DEBUG"
             ],
             "intelliSenseMode": "msvc-x64"
         }
