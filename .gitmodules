@@ -1,6 +1,0 @@
-[submodule "protobuf"]
-	path = protobuf
-	url = git@github.com:protocolbuffers/protobuf.git
-[submodule "rocksdb"]
-	path = rocksdb
-	url = git@github.com:facebook/rocksdb.git
