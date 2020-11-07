@@ -16,7 +16,7 @@ def thread_run():
         thread.start_new_thread(print_time, ('thread1', 2,))
         thread.start_new_thread(print_time, ('thread2', 5,))
     except:
-        print("thread fail")
+        print("routine fail")
         sys.exit(1)
 
 def gevent_fun(count):

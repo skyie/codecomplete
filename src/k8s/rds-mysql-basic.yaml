@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rds-mysql-basic-pass
+type: Opaque
+data:
+  rootuser: cm9vdA==
+  rootpwd: MTIzNDU2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rds-mysql-basic
+  labels:
+    app: rds-mysql-basic
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+      protocol: TCP
+  selector:
+    app: rds-mysql-basic
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rds-mysql-basic-pv
+  labels:
+    type: local
+spec:
+  storageClassName: rds-mysql-basic-localstorage
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/var/lib/rds-mysql-basic"
+    type: DirectoryOrCreate
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: rds-mysql-basic-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: rds-mysql-basic-localstorage
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: rds-mysql-basic-localstorage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rds-mysql-basic
+  labels:
+    app: rds-mysql-basic
+spec:
+  selector:
+    matchLabels:
+      app: rds-mysql-basic
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: rds-mysql-basic
+    spec:
+      containers:
+        - image: mysql:5.7
+          imagePullPolicy: IfNotPresent
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rds-mysql-basic-pass
+                  key: rootpwd
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: rds-mysql-basic-pvc
